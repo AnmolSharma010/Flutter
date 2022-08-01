@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "155324342665",
+    "project_id": "dosel-964d0",
+    "storage_bucket": "dosel-964d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:155324342665:android:6bcf5aa4256e2d35e90158",
+        "android_client_info": {
+          "package_name": "com.example.team"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "155324342665-knuqkqfvmbu8cmp4j9kesa6kb0rqv3hi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.team",
+            "certificate_hash": "486053e053b740b29dd70ec46aef78cc7bc38bcb"
+          }
+        },
+        {
+          "client_id": "155324342665-l6facvbodt5kn3rt66okped997mp8hpb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo5CYy-DrStJy05BblqkyWOpug_9ApnFQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "155324342665-l6facvbodt5kn3rt66okped997mp8hpb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
