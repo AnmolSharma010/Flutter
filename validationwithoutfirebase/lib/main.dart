@@ -39,7 +39,7 @@ class _ValidationState extends State<Validation> {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(25.0),
+        padding: EdgeInsets.all(35.0),
         child: Center(
           child: Form(
             key: formKey,
