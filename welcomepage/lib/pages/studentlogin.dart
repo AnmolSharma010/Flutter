@@ -27,6 +27,7 @@ class _studentloginState extends State<studentlogin> {
                     prefixIcon: Icon(Icons.email_outlined),
                     labelText: "Student Email",
                   ),
+                  
                   ),
                 Padding(
                   padding: EdgeInsets.all(10.0),
@@ -38,12 +39,7 @@ class _studentloginState extends State<studentlogin> {
                     prefixIcon: Icon(Icons.password_outlined),
                     labelText: "Password",
                   ),
-                  validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Enter a valid password!';
-                  }
-                  return null;
-                },
+                  
                 ),
                 Padding(
                   padding: EdgeInsets.all(10.0),
