@@ -7,20 +7,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1053341235960:android:03172db71439c3a68bd90d",
+        "mobilesdk_app_id": "1:1053341235960:android:c055ff8d30bceefd8bd90d",
         "android_client_info": {
           "package_name": "com.example.dosel"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "1053341235960-otca61d36a4hb1tctic9hq7jdflbrd2n.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.dosel",
-            "certificate_hash": "486053e053b740b29dd70ec46aef78cc7bc38bcb"
-          }
-        },
         {
           "client_id": "1053341235960-i6k7kaml52rdapnt6j9jdvp3kv04di02.apps.googleusercontent.com",
           "client_type": 3

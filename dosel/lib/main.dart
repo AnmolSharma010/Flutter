@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
   runApp(MyApp());
@@ -149,7 +150,7 @@ class _SecondpageState extends State<Secondpage> {
                 onPressed: () { 
                   Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Registerpage()),
+                  MaterialPageRoute(builder: (context) => signup()),
                   );
                 },
                 child: const Text('Register'),
@@ -320,87 +321,215 @@ class _TeacherpageState extends State<Teacherpage> {
   }
 }
 
-class Registerpage extends StatefulWidget {
-  const Registerpage({ Key? key }) : super(key: key);
+class signup extends StatefulWidget {
+  const signup({Key? key}) : super(key: key);
 
   @override
-  State<Registerpage> createState() => _RegisterpageState();
+  State<signup> createState() => _signupState();
 }
 
-class _RegisterpageState extends State<Registerpage> {
-  //email key
-  final emailField = GlobalKey<FormState>();
+class _signupState extends State<signup> {
+    
+  final _formKey = GlobalKey<FormState>();
+  var email = "";
+  var password = "";
+  var confirmPassword = "";
+  // Create a text controller and use it to retrieve the current value
+  // of the TextField.
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  //email controller
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+   registration() async {
+    if (password == confirmPassword) {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: password);
+        print(userCredential);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text(
+              "Registered Successfully. Please Login..",
+              style: TextStyle(fontSize: 20.0),
+            ),
+          ),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Fourthpage(),
+          ),
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print("Password Provided is too Weak");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.orangeAccent,
+              content: Text(
+                "Password Provided is too Weak",
+                style: TextStyle(fontSize: 18.0, color: Colors.black),
+              ),
+            ),
+          );
+        } else if (e.code == 'email-already-in-use') {
+          print("Account Already exists");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.orangeAccent,
+              content: Text(
+                "Account Already exists",
+                style: TextStyle(fontSize: 18.0, color: Colors.black),
+              ),
+            ),
+          );
+        }
+      }
+    } else {
+      print("Password and Confirm Password doesn't match");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.orangeAccent,
+          content: Text(
+            "Password and Confirm Password doesn't match",
+            style: TextStyle(fontSize: 16.0, color: Colors.black),
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    //email field
-    final emailField = TextFormField(
-      autofocus: false,
-      controller: emailController,
-      keyboardType: TextInputType.emailAddress,
-
-      onSaved: (Value){
-        emailController.text = Value!;
-      },
-      textInputAction: TextInputAction.next,
-    );
-
-    final passwordField = TextFormField(
-      autofocus: false,
-      controller: passwordController,
-     
-
-      onSaved: (Value){
-        passwordController.text = Value!;
-      },
-      textInputAction: TextInputAction.done,
-    );
-
-    final Loginbutton = Material();
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Login Page as Student"),
-      ),
-      body: Center(
-        child: Container(
-          padding: EdgeInsets.all(60.0),
-          child: Column(
-            children: <Widget>[
-              Center(
-                child: TextFormField (  
-                  decoration: InputDecoration(  
-                  border: OutlineInputBorder(),  
-                  labelText: 'Enter Email',  
-                  hintText: 'abc@gmail.com'  
-                      ),  
-                   ), 
-              ),  
-              Padding(  
-                  padding: EdgeInsets.all(20),  
-                  child: TextFormField(  
-                    obscureText: true,  
-                    decoration: InputDecoration(  
-                      border: OutlineInputBorder(),  
-                      labelText: 'Password',  
-                      hintText: 'Enter Password',  
-                    ),  
-                  ),  
-                ), 
-                SizedBox(
-                  height: 20,
-                ), 
-                ElevatedButton(
-                onPressed: () { 
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Secondpage()),
-                  );
-                },
-                child: const Text('Create'),
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+          child: ListView(
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10.0),
+                child: TextFormField(
+                  autofocus: false,
+                  decoration: InputDecoration(
+                    labelText: 'Email: ',
+                    labelStyle: TextStyle(fontSize: 20.0),
+                    border: OutlineInputBorder(),
+                    errorStyle:
+                        TextStyle(color: Colors.redAccent, fontSize: 15),
+                  ),
+                  controller: emailController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please Enter Email';
+                    } else if (!value.contains('@')) {
+                      return 'Please Enter Valid Email';
+                    }
+                    return null;
+                  },
+                ),
               ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10.0),
+                child: TextFormField(
+                  autofocus: false,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Password: ',
+                    labelStyle: TextStyle(fontSize: 20.0),
+                    border: OutlineInputBorder(),
+                    errorStyle:
+                        TextStyle(color: Colors.redAccent, fontSize: 15),
+                  ),
+                  controller: passwordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please Enter Password';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10.0),
+                child: TextFormField(
+                  autofocus: false,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Confirm Password: ',
+                    labelStyle: TextStyle(fontSize: 20.0),
+                    border: OutlineInputBorder(),
+                    errorStyle:
+                        TextStyle(color: Colors.redAccent, fontSize: 15),
+                  ),
+                  controller: confirmPasswordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please Enter Password';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        // Validate returns true if the form is valid, otherwise false.
+                        if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            email = emailController.text;
+                            password = passwordController.text;
+                            confirmPassword = confirmPasswordController.text;
+                          });
+                           Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Fourthpage()),);
+                         
+                        }
+                      },
+                      child: Text(
+                        'Sign Up',
+                        style: TextStyle(fontSize: 18.0),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Already have an Account? "),
+                    TextButton(
+                        onPressed: () => {
+                              Navigator.pushReplacement(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder:
+                                      (context, animation1, animation2) =>
+                                          Fourthpage(),
+                                  transitionDuration: Duration(seconds: 0),
+                                ),
+                              )
+                            },
+                        child: Text('Login'))
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -408,6 +537,9 @@ class _RegisterpageState extends State<Registerpage> {
     );
   }
 }
+
+
+
 
 class Registerpage2 extends StatefulWidget {
   const Registerpage2({ Key? key }) : super(key: key);

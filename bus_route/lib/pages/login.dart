@@ -1,5 +1,7 @@
 import 'dart:html';
 
+import 'package:bus_route/pages/Dashboard.dart';
+import 'package:bus_route/pages/Signup.dart';
 import 'package:flutter/material.dart';
 
 class Loginpage extends StatefulWidget {
@@ -67,7 +69,7 @@ class _LoginpageState extends State<Loginpage> {
                 children: [
                   Padding(padding: EdgeInsets.all(10)),
                   Center(child: Text("Login to Admin Panel",
-                  style: TextStyle(fontSize: 30,color: Colors.white,
+                  style: TextStyle(fontSize: 30,color: Colors.white,fontWeight: FontWeight.bold,
                   ),
                   ),
                   
@@ -140,7 +142,7 @@ class _LoginpageState extends State<Loginpage> {
                 ),
                 RaisedButton(
                   onPressed: () {
-                    // Navigator.push(context, MaterialPageRoute(builder: (context)=> enterstudentpage(),),);
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> Dashboard(),),);
                   },
                   padding: EdgeInsets.fromLTRB(150, 20, 150, 20),
 
@@ -154,6 +156,7 @@ class _LoginpageState extends State<Loginpage> {
                         fontWeight: FontWeight.w800,
                         fontSize: 20),
                   ),
+                  
                 ),
                 SizedBox(
                       height: 8,
@@ -164,7 +167,9 @@ class _LoginpageState extends State<Loginpage> {
                     
                      Text("Have No Account?",style: TextStyle(color: Colors.white),),
                      
-                     MaterialButton(onPressed: (){},
+                     MaterialButton(onPressed: (){
+                       Navigator.push(context, MaterialPageRoute(builder: (context)=> SignupPage()),);
+                     },
                     child: Text("Signup Here",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15),
                     ),
                     ),
